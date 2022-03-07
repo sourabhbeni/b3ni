@@ -34,7 +34,7 @@ def cloneNode(update, context):
     is_gdtot = is_gdtot_link(link)
     if is_gdtot:
         try:
-            msg = sendMessage(f"Processing: <code>{link}</code>", context.bot, update)
+            msg = sendMessage(f"Processing ♻️: <code>{link}</code>", context.bot, update)
             link = gdtot(link)
             deleteMessage(context.bot, msg)
         except DirectDownloadLinkException as e:
@@ -57,7 +57,7 @@ def cloneNode(update, context):
                 msg2 = f'Failed, Clone limit is {CLONE_LIMIT}GB.\nYour File/Folder size is {get_readable_file_size(size)}.'
                 return sendMessage(msg2, context.bot, update)
         if files <= 20:
-            msg = sendMessage(f"Cloning: <code>{link}</code>", context.bot, update)
+            msg = sendMessage(f"Cloning ♻️: <code>{link}</code>", context.bot, update)
             result, button = gd.clone(link)
             deleteMessage(context.bot, msg)
         else:
@@ -80,8 +80,8 @@ def cloneNode(update, context):
                     update_all_messages()
             except IndexError:
                 pass
-        cc = f'\n\n<b>cc: </b>{tag}'
-        if button in ["cancelled", ""]:
+        cc = f'\n\n<b> ✅ Requested By: </b>{tag}'
+        if button in ["❌cancelled", ""]:
             sendMessage(f"{tag} {result}", context.bot, update)
         else:
             sendMarkup(result + cc, context.bot, update, button)
