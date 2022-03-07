@@ -218,7 +218,7 @@ def _edit_telegraph(path, telegraph_content):
                 nxt_page += 1
         telegraph.edit_page(
             path = path[prev_page],
-            title = 'B3NI's telegraph',
+            title = 'B3NI Telegraph',
             content=content
         )
     return
