@@ -436,7 +436,7 @@ class GoogleDriveHelper:
     def __create_directory(self, directory_name, parent_id):
         file_metadata = {
             "name": directory_name,
-            "description": "Uploaded by Mirror-leech-telegram-bot",
+            "description": "Uploaded by B3NI",
             "mimeType": self.__G_DRIVE_DIR_MIME_TYPE
         }
         if parent_id is not None:
@@ -721,7 +721,7 @@ class GoogleDriveHelper:
         for content in self.telegraph_content:
             self.path.append(
                 telegraph.create_page(
-                    title='Mirror-Leech-Bot Drive Search',
+                    title='B3NI Drive Search',
                     content=content
                 )["path"]
             )
@@ -749,22 +749,21 @@ class GoogleDriveHelper:
             name = meta['name']
             LOGGER.info(f"Counting: {name}")
             mime_type = meta.get('mimeType')
-            if mime_type == self.__G_DRIVE_DIR_MIME_TYPE:
-                self.__gDrive_directory(meta)
-                msg += f'<b>Name: </b><code>{name}</code>'
-                msg += f'\n\n<b>Size: </b>{get_readable_file_size(self.__total_bytes)}'
-                msg += '\n\n<b>Type: </b>Folder'
-                msg += f'\n<b>SubFolders: </b>{self.__total_folders}'
-                msg += f'\n<b>Files: </b>{self.__total_files}'
+            self.__gDrive_directory(meta)
+                msg += f'<b> ✍️ Name: </b><code>{name}</code>'
+                msg += f'\n\n<b> 💽 Size: </b>{get_readable_file_size(self.__total_bytes)}'
+                msg += '\n\n<b> 🧩 Type: </b>Folder'
+                msg += f'\n<b> 🗂 SubFolders: </b>{self.__total_folders}'
+                msg += f'\n<b> 📁 Files: </b>{self.__total_files}'
             else:
-                msg += f'<b>Name: </b><code>{name}</code>'
+                msg += f'<b> ✍️ Name: </b><code>{name}</code>'
                 if mime_type is None:
                     mime_type = 'File'
                 self.__total_files += 1
                 self.__gDrive_file(meta)
-                msg += f'\n\n<b>Size: </b>{get_readable_file_size(self.__total_bytes)}'
-                msg += f'\n\n<b>Type: </b>{mime_type}'
-                msg += f'\n<b>Files: </b>{self.__total_files}'
+                msg += f'\n\n<b> 💽 Size: </b>{get_readable_file_size(self.__total_bytes)}'
+                msg += f'\n\n<b> 🧩 Type: </b>{mime_type}'
+                msg += f'\n<b> 📁 Files: </b>{self.__total_files}'
         except Exception as err:
             if isinstance(err, RetryError):
                 LOGGER.info(f"Total Attempts: {err.last_attempt.attempt_number}")
@@ -833,9 +832,9 @@ class GoogleDriveHelper:
                 if token_service is not None:
                     self.__service = token_service
                     return self.helper(link)
-                msg = "File not found."
+                msg = "File not found.🥲"
             else:
-                msg = f"Error.\n{err}"
+                msg = f"🙂Error🙃.\n{err}"
             return msg, "", "", ""
         return "", size, name, files
 
@@ -853,12 +852,12 @@ class GoogleDriveHelper:
                 self.__download_file(file_id, path, meta.get('name'), meta.get('mimeType'))
         except Exception as err:
             if isinstance(err, RetryError):
-                LOGGER.info(f"Total Attempts: {err.last_attempt.attempt_number}")
+                LOGGER.info(f" 😵‍💫Total Attempts: {err.last_attempt.attempt_number}")
                 err = err.last_attempt.exception()
             err = str(err).replace('>', '').replace('<', '')
             LOGGER.error(err)
             if "downloadQuotaExceeded" in str(err):
-                err = "Download Quota Exceeded."
+                err = "Download Quota Exceeded. 🤧"
             elif "File not found" in str(err):
                 token_service = self.__alt_authorize()
                 if token_service is not None:
@@ -946,10 +945,10 @@ class GoogleDriveHelper:
     def cancel_download(self):
         self.is_cancelled = True
         if self.is_downloading:
-            LOGGER.info(f"Cancelling Download: {self.name}")
+            LOGGER.info(f" 🤕Cancelling Download: {self.name}")
             self.__listener.onDownloadError('Download stopped by user!')
         elif self.is_cloning:
-            LOGGER.info(f"Cancelling Clone: {self.name}")
+            LOGGER.info(f" 🤕Cancelling Clone: {self.name}")
         elif self.is_uploading:
-            LOGGER.info(f"Cancelling Upload: {self.name}")
-            self.__listener.onUploadError('your upload has been stopped and uploaded data has been deleted!')
+            LOGGER.info(f" 🤕Cancelling Upload: {self.name}")
+            self.__listener.onUploadError('your upload has been stopped and uploaded data has been deleted! 😵 ')
