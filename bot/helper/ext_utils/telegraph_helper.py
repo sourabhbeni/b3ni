@@ -57,4 +57,4 @@ class TelegraphHelper:
 			return self.edit_page(path, title, content)
 
 
-telegraph=TelegraphHelper('Mr. X MIrror Zone 💫💫', 'https://t.me/+imC5GbNVHJczN2Vl')
+telegraph=TelegraphHelper('B3NI Mirror Zone 💫💫', 'https://t.me/gc_anon')
