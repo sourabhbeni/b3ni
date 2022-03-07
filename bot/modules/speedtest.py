@@ -8,7 +8,7 @@ from bot.helper.telegram_helper.message_utils import sendMessage, editMessage
 
 
 def speedtest(update, context):
-    speed = sendMessage("Running Speed Test . . . ", context.bot, update)
+    speed = sendMessage("Running Speed Test . . . 🚀 ", context.bot, update.message)
     test = Speedtest()
     test.get_best_server()
     test.download()
@@ -21,6 +21,7 @@ def speedtest(update, context):
 <b> 🌍 Country:</b> <code>{result['server']['country']}, {result['server']['cc']}</code>
 <b> ✨ Sponsor:</b> <code>{result['server']['sponsor']}</code>
 <b> 🛰 ISP:</b> <code>{result['client']['isp']}</code>
+
 <b> ⚡️ SpeedTest Results</b>
 <b> 📤 Upload:</b> <code>{speed_convert(result['upload'] / 8)}</code>
 <b> 📥 Download:</b>  <code>{speed_convert(result['download'] / 8)}</code>

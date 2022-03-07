@@ -364,7 +364,7 @@ def _mirror(bot, message, isZip=False, extract=False, isQbit=False, isLeech=Fals
             pass
 
     if not is_url(link) and not is_magnet(link) and not ospath.exists(link):
-        help_msg = "<b> ❗ Send link along with command line❗:</b>"
+        help_msg = "<b> ⚠️ Send link along with command line:</b>"
         help_msg += "\n<code>/command</code> {link} |newname pswd: mypassword [𝚣𝚒𝚙/𝚞𝚗𝚣𝚒𝚙]"
         help_msg += "\n\n<b>By replying to link or file:</b>"
         help_msg += "\n<code>/command</code> |newname pswd: mypassword [𝚣𝚒𝚙/𝚞𝚗𝚣𝚒𝚙]"
@@ -377,7 +377,7 @@ def _mirror(bot, message, isZip=False, extract=False, isQbit=False, isLeech=Fals
     LOGGER.info(link)
 
     if not is_mega_link(link) and not isQbit and not is_magnet(link) \
-       and not is_gdrive_link(link) and not link.endswith('.torrent'):
+       and not ospath.exists(link) and not is_gdrive_link(link) and not link.endswith('.torrent'):
         content_type = get_content_type(link)
         if content_type is None or match(r'text/html|text/plain', content_type):
             try:
