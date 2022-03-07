@@ -80,27 +80,27 @@ def torserbut(update, context):
     data = query.data
     data = data.split(" ")
     if user_id != int(data[1]):
-        query.answer(text="Not Yours!", show_alert=True)
+        query.answer(text="Not Yours! 😝 ", show_alert=True)
     elif data[2] == 'api':
         query.answer()
         button = _api_buttons(user_id)
-        editMessage('Choose site to search:', message, button)
+        editMessage('♻️ Choose site to search:', message, button)
     elif data[2] == 'plugin':
         query.answer()
         button = _plugin_buttons(user_id)
-        editMessage('Choose site to search:', message, button)
+        editMessage('♻️ Choose site to search:', message, button)
     elif data[2] != "cancel":
         query.answer()
         site = data[2]
         tool = data[3]
         if tool == 'api':
-            editMessage(f"<b>Searching for <i>{key}</i>\nTorrent Site:- <i>{SITES.get(site)}</i></b>", message)
+            editMessage(f"<b> 🔎 Searching for <i>{key}</i>\nTorrent Site:- <i>{SITES.get(site)}</i></b>", message)
         else:
-            editMessage(f"<b>Searching for <i>{key}</i>\nTorrent Site:- <i>{site.capitalize()}</i></b>", message)
+            editMessage(f"<b> 🔎 Searching for <i>{key}</i>\nTorrent Site:- <i>{site.capitalize()}</i></b>", message)
         Thread(target=_search, args=(key, site, message, tool)).start()
     else:
         query.answer()
-        editMessage("Search has been canceled!", message)
+        editMessage("Search has been canceled! ❌ ", message)
 
 def _search(key, site, message, tool):
     LOGGER.info(f"Searching: {key} from {site}")
@@ -112,8 +112,8 @@ def _search(key, site, message, tool):
             if site == "all":
                 search_results = list(itertools.chain.from_iterable(search_results))
             if isinstance(search_results, list):
-                msg = f"<b>Found {min(len(search_results), SEARCH_LIMIT)}</b>"
-                msg += f" <b>result for <i>{key}</i>\nTorrent Site:- <i>{SITES.get(site)}</i></b>"
+                msg = f"<b> 🔎 Found {min(len(search_results), SEARCH_LIMIT)}</b>"
+                msg += f" <b> 📄 result for <i>{key}</i>\nTorrent Site:- <i>{SITES.get(site)}</i></b>"
             else:
                 return editMessage(f"No result found for <i>{key}</i>\nTorrent Site:- <i>{SITES.get(site)}</i>", message)
         except Exception as e:
@@ -131,8 +131,8 @@ def _search(key, site, message, tool):
         search_results = dict_search_results.results
         total_results = dict_search_results.total
         if total_results != 0:
-            msg = f"<b>Found {min(total_results, SEARCH_LIMIT)}</b>"
-            msg += f" <b>result for <i>{key}</i>\nTorrent Site:- <i>{site.capitalize()}</i></b>"
+            msg = f"<b> 🔎 Found {min(total_results, SEARCH_LIMIT)}</b>"
+            msg += f" <b> 📝 result for <i>{key}</i>\n 🧲 Torrent Site:- <i>{site.capitalize()}</i></b>"
         else:
             return editMessage(f"No result found for <i>{key}</i>\nTorrent Site:- <i>{site.capitalize()}</i>", message)
     link = _getResult(search_results, key, message, tool)
@@ -145,21 +145,21 @@ def _search(key, site, message, tool):
 
 def _getResult(search_results, key, message, tool):
     telegraph_content = []
-    msg = f"<h4>Search Result For {key}</h4>"
+    msg = f"<h4> 🔎 Search Result For {key}</h4>"
     for index, result in enumerate(search_results, start=1):
         if tool == 'api':
             try:
                 msg += f"<code><a href='{result['Url']}'>{escape(result['Name'])}</a></code><br>"
                 if "Files" in result.keys():
                     for subres in result['Files']:
-                        msg += f"<b>Quality: </b>{subres['Quality']} | <b>Size: </b>{subres['Size']}<br>"
+                        msg += f"<b> ⚙️ Quality: </b>{subres['Quality']} | <b>Size: </b>{subres['Size']}<br>"
                         try:
                             msg += f"<a href='{subres['Torrent']}'>Direct Link</a><br>"
                         except KeyError:
-                            msg += f"<b>Share Magnet to</b> <a href='http://t.me/share/url?url={subres['Magnet']}'>Telegram</a><br>"
+                            msg += f"<b> 📲 Share Magnet to</b> <a href='http://t.me/share/url?url={subres['Magnet']}'>Telegram</a><br>"
                 else:
-                    msg += f"<b>Size: </b>{result['Size']}<br>"
-                    msg += f"<b>Seeders: </b>{result['Seeders']} | <b>Leechers: </b>{result['Leechers']}<br>"
+                    msg += f"<b> 🎞 Size: </b>{result['Size']}<br>"
+                    msg += f"<b> ⛈ Seeders: </b>{result['Seeders']} | <b>Leechers: </b>{result['Leechers']}<br>"
             except KeyError:
                 pass
             try:
@@ -172,8 +172,8 @@ def _getResult(search_results, key, message, tool):
                 msg += "<br>"
         else:
             msg += f"<a href='{result.descrLink}'>{escape(result.fileName)}</a><br>"
-            msg += f"<b>Size: </b>{get_readable_file_size(result.fileSize)}<br>"
-            msg += f"<b>Seeders: </b>{result.nbSeeders} | <b>Leechers: </b>{result.nbLeechers}<br>"
+            msg += f"<b> 🎞 Size: </b>{get_readable_file_size(result.fileSize)}<br>"
+            msg += f"<b> ⛈ Seeders: </b>{result.nbSeeders} | <b>Leechers: </b>{result.nbLeechers}<br>"
             link = result.fileUrl
             if link.startswith('magnet:'):
                 msg += f"<b>Share Magnet to</b> <a href='http://t.me/share/url?url={quote(link)}'>Telegram</a><br><br>"
@@ -190,14 +190,14 @@ def _getResult(search_results, key, message, tool):
     if msg != "":
         telegraph_content.append(msg)
 
-    editMessage(f"<b>Creating</b> {len(telegraph_content)} <b>Telegraph pages.</b>", message)
+    editMessage(f"<b> 💫 Creating</b> {len(telegraph_content)} <b> ♻️ Telegraph pages.</b>", message)
     path = [telegraph.create_page(
-                title='Mirror-leech-bot Torrent Search',
+                title='B3NI 💫',
                 content=content
             )["path"] for content in telegraph_content]
     sleep(0.5)
     if len(path) > 1:
-        editMessage(f"<b>Editing</b> {len(telegraph_content)} <b>Telegraph pages.</b>", message)
+        editMessage(f"<b> ✂️ Editing</b> {len(telegraph_content)} <b> ♻️ Telegraph pages.</b>", message)
         _edit_telegraph(path, telegraph_content)
     return f"https://telegra.ph/{path[0]}"
 
@@ -218,7 +218,7 @@ def _edit_telegraph(path, telegraph_content):
                 nxt_page += 1
         telegraph.edit_page(
             path = path[prev_page],
-            title = 'Mirror-leech-bot Torrent Search',
+            title = 'B3NI's telegraph',
             content=content
         )
     return
