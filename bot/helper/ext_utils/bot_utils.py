@@ -79,26 +79,26 @@ def getDownloadByGid(gid):
                 and dl.gid() == gid
             ):
                 return dl
-    return None
+    return False
 
-def getAllDownload():
+def getAllDownload(req_status: str):
     with download_dict_lock:
-        for dlDetails in list(download_dict.values()):
-            status = dlDetails.status()
-            if (
-                status
-                not in [
-                    MirrorStatus.STATUS_ARCHIVING,
-                    MirrorStatus.STATUS_EXTRACTING,
-                    MirrorStatus.STATUS_SPLITTING,
-                    MirrorStatus.STATUS_CLONING,
-                    MirrorStatus.STATUS_UPLOADING,
-                    MirrorStatus.STATUS_CHECKING,
-                ]
-                and dlDetails
-            ):
-                return dlDetails
-    return None
+        for dl in list(download_dict.values()):
+            status = dl.status()
+            if status not in [MirrorStatus.STATUS_ARCHIVING, MirrorStatus.STATUS_EXTRACTING, MirrorStatus.STATUS_SPLITTING] and dl:
+                if req_status == 'down' and (status not in [MirrorStatus.STATUS_SEEDING,
+                                                            MirrorStatus.STATUS_UPLOADING,
+                                                            MirrorStatus.STATUS_CLONING]):
+                    return dl
+                elif req_status == 'up' and status == MirrorStatus.STATUS_UPLOADING:
+                    return dl
+                elif req_status == 'clone' and status == MirrorStatus.STATUS_CLONING:
+                    return dl
+                elif req_status == 'seed' and status == MirrorStatus.STATUS_SEEDING:
+                    return dl
+                elif req_status == 'all':
+                    return dl
+    return False
 
 def get_progress_bar_string(status):
     completed = status.processed_bytes() / 8
@@ -115,7 +115,7 @@ def get_readable_message():
     with download_dict_lock:
         msg = ""
         dlspeed_bytes = 0
-        uldl_bytes = 0
+        upspeed_bytes = 0
         START = 0
         if STATUS_LIMIT is not None:
             tasks = len(download_dict)
@@ -287,4 +287,3 @@ def get_content_type(link: str):
         except:
             content_type = None
     return content_type
-
