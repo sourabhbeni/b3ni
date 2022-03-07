@@ -749,7 +749,8 @@ class GoogleDriveHelper:
             name = meta['name']
             LOGGER.info(f"Counting: {name}")
             mime_type = meta.get('mimeType')
-            self.__gDrive_directory(meta)
+            if mime_type == self.__G_DRIVE_DIR_MIME_TYPE:
+                self.__gDrive_directory(meta)
                 msg += f'<b> ✍️ Name: </b><code>{name}</code>'
                 msg += f'\n\n<b> 💽 Size: </b>{get_readable_file_size(self.__total_bytes)}'
                 msg += '\n\n<b> 🧩 Type: </b>Folder'
