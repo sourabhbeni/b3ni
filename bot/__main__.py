@@ -64,12 +64,12 @@ def start(update, context):
     reply_markup = InlineKeyboardMarkup(buttons.build_menu(2))
     if CustomFilters.authorized_user(update) or CustomFilters.authorized_chat(update):
         start_string = f'''
-Sorry! use this bot in @mrxmirrorzone
+Sorry! Bot ko group me use kro 🐱
 Type /{BotCommands.HelpCommand} to get a list of available commands
 '''
         sendMarkup(start_string, context.bot, update.message, reply_markup)
     else:
-        sendMarkup('Not Authorized user, join @mrxmirrorzone', context.bot, update.message, reply_markup)
+        sendMarkup('yha kyu backchodi kr rha hai jo leech krna hai group me kr', context.bot, update.message, reply_markup)
 
 def restart(update, context):
     restart_message = sendMessage("Restarting...♻️", context.bot, update.message)
