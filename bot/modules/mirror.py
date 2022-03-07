@@ -186,12 +186,12 @@ class MirrorListener:
             update_all_messages()
 
     def onUploadComplete(self, link: str, size, files, folders, typ, name: str):
-        msg = f'<b>Name: </b><code>{escape(name)}</code>\n\n<b>Size: </b>{size}'
+        msg = f'<b> ✍️ Name: </b><code>{escape(name)}</code>\n\n<b> 💽 Size: </b>{size}'
         if self.isLeech:
             count = len(files)
-            msg += f'\n<b>Total Files: </b>{count}'
+            msg += f'\n<b> 📂 Total Files: </b>{count}'
             if typ != 0:
-                msg += f'\n<b>Corrupted Files: </b>{typ}'
+                msg += f'\n<b> ❌ Corrupted Files: </b>{typ}'
             msg += f'\n<b>cc: </b>{self.tag}\n\n'
             if self.message.chat.type == 'private':
                 sendMessage(msg, self.bot, self.message)
@@ -220,11 +220,11 @@ class MirrorListener:
             else:
                 update_all_messages()
         else:
-            msg += f'\n\n<b>Type: </b>{typ}'
+            msg += f'\n\n<b> 🔰 Type: </b>{typ}'
             if ospath.isdir(f'{DOWNLOAD_DIR}{self.uid}/{name}'):
-                msg += f'\n<b>SubFolders: </b>{folders}'
-                msg += f'\n<b>Files: </b>{files}'
-            msg += f'\n\n<b>cc: </b>{self.tag}'
+                msg += f'\n<b> 📂 SubFolders: </b>{folders}'
+                msg += f'\n<b> 📁 Files: </b>{files}'
+            msg += f'\n\n<b> ✅ Requested By: </b>{self.tag}'
             buttons = ButtonMaker()
             link = short_url(link)
             buttons.buildbutton("☁️ Drive Link", link)
@@ -364,12 +364,12 @@ def _mirror(bot, message, isZip=False, extract=False, isQbit=False, isLeech=Fals
             pass
 
     if not is_url(link) and not is_magnet(link) and not ospath.exists(link):
-        help_msg = "<b>Send link along with command line:</b>"
-        help_msg += "\n<code>/command</code> {link} |newname pswd: xx [zip/unzip]"
+        help_msg = "<b> ❗ Send link along with command line❗:</b>"
+        help_msg += "\n<code>/command</code> {link} |newname pswd: mypassword [𝚣𝚒𝚙/𝚞𝚗𝚣𝚒𝚙]"
         help_msg += "\n\n<b>By replying to link or file:</b>"
-        help_msg += "\n<code>/command</code> |newname pswd: xx [zip/unzip]"
+        help_msg += "\n<code>/command</code> |newname pswd: mypassword [𝚣𝚒𝚙/𝚞𝚗𝚣𝚒𝚙]"
         help_msg += "\n\n<b>Direct link authorization:</b>"
-        help_msg += "\n<code>/command</code> {link} |newname pswd: xx\nusername\npassword"
+        help_msg += "\n<code>/command</code> {link} |newname pswd: mypassword\nusername\npassword"
         help_msg += "\n\n<b>Qbittorrent selection:</b>"
         help_msg += "\n<code>/qbcommand</code> <b>s</b> {link} or by replying to {file}"
         return sendMessage(help_msg, bot, message)
@@ -377,7 +377,7 @@ def _mirror(bot, message, isZip=False, extract=False, isQbit=False, isLeech=Fals
     LOGGER.info(link)
 
     if not is_mega_link(link) and not isQbit and not is_magnet(link) \
-        and not is_gdrive_link(link) and not link.endswith('.torrent'):
+       and not ospath.exists(link) and not is_gdrive_link(link) and not link.endswith('.torrent'):
         content_type = get_content_type(link)
         if content_type is None or match(r'text/html|text/plain', content_type):
             try:
